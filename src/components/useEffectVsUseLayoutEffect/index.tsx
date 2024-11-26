@@ -1,11 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useLayoutEffect } from "react";
+import { Box, Typography, Card, Button, Container, Paper } from "@mui/material";
 
-interface CodeExplanationProps {
-  type: "effect" | "layout";
-}
-
-const CodeExplanation: React.FC<CodeExplanationProps> = ({ type }) => {
+// Side by Side Explanation Component
+const EffectExplanation = ({ type }: { type: "effect" | "layout" }) => {
   const code =
     type === "effect"
       ? `// useEffect Example
@@ -48,10 +45,94 @@ useLayoutEffect(() => {
   setColors(newColors);
 }, [trigger]); // Runs before paint`;
 
+  const points =
+    type === "effect"
+      ? [
+          "React updates the DOM and the browser paints",
+          "useEffect runs asynchronously after paint",
+          "Each color update creates a new render cycle",
+        ]
+      : [
+          "React updates the DOM",
+          "useLayoutEffect runs synchronously before paint",
+          "Browser paints final state only",
+        ];
+
   return (
-    <pre className="bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto text-sm leading-6 mt-4">
-      <code>{code}</code>
-    </pre>
+    <Box
+      sx={{ display: "flex", gap: 4, flexWrap: { xs: "wrap", md: "nowrap" } }}
+    >
+      {/* Left side: Points */}
+      <Card
+        sx={{
+          flex: "1",
+          minWidth: { xs: "100%", md: "300px" },
+          p: 3,
+          bgcolor: "grey.50",
+        }}
+      >
+        <Typography variant="h6" sx={{ mb: 2, color: "text.primary" }}>
+          How {type === "effect" ? "useEffect" : "useLayoutEffect"} Works
+        </Typography>
+        <Box
+          component="ol"
+          sx={{
+            listStyle: "none",
+            p: 0,
+            m: 0,
+            "& > li": {
+              mb: 2,
+              display: "flex",
+              gap: 2,
+            },
+          }}
+        >
+          {points.map((point, index) => (
+            <li key={index}>
+              <Box
+                sx={{
+                  width: 24,
+                  height: 24,
+                  borderRadius: "50%",
+                  bgcolor: type === "effect" ? "primary.main" : "success.main",
+                  color: "white",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                  fontSize: "0.875rem",
+                }}
+              >
+                {index + 1}
+              </Box>
+              <Typography color="text.secondary">{point}</Typography>
+            </li>
+          ))}
+        </Box>
+      </Card>
+
+      {/* Right side: Code */}
+      <Card
+        sx={{
+          flex: "2",
+          minWidth: { xs: "100%", md: "500px" },
+          bgcolor: "#1a1a1a",
+          overflow: "auto",
+        }}
+      >
+        <pre
+          style={{
+            margin: 0,
+            padding: 24,
+            color: "#fff",
+            fontSize: "0.875rem",
+            lineHeight: 1.5,
+          }}
+        >
+          <code>{code}</code>
+        </pre>
+      </Card>
+    </Box>
   );
 };
 
@@ -105,141 +186,121 @@ const UseEffectVsUseLayoutEffect = () => {
   }, [layoutEffectTrigger]);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        <header className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            useEffect vs useLayoutEffect
-          </h1>
-          <p className="text-lg text-gray-600">
-            A visual demonstration with TypeScript and code examples
-          </p>
-        </header>
+    <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Box textAlign="center" mb={6}>
+        <Typography variant="h3" component="h1" gutterBottom>
+          useEffect vs useLayoutEffect
+        </Typography>
+        <Typography variant="h6" color="text.secondary">
+          A visual demonstration with TypeScript and code examples
+        </Typography>
+      </Box>
 
-        {/* useEffect Section */}
-        <section className="bg-white rounded-2xl shadow-sm p-6 mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-            useEffect Example
-          </h2>
-          <div className="flex flex-wrap gap-3 mb-6">
-            {effectColors.map((color, index) => (
-              <div
-                key={index}
-                className="w-20 h-20 rounded-xl shadow-md transition-colors duration-300"
-                style={{ backgroundColor: color }}
-              />
-            ))}
-          </div>
-          <button
-            onClick={() => setEffectTrigger((prev) => prev + 1)}
-            className="bg-blue-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors"
-          >
-            Shuffle Colors
-          </button>
+      {/* useEffect Section */}
+      <Paper elevation={2} sx={{ p: 4, mb: 4, borderRadius: 2 }}>
+        <Typography variant="h4" gutterBottom>
+          useEffect Example
+        </Typography>
 
-          <div className="mt-8 bg-gray-50 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              How useEffect Works
-            </h3>
-            <div className="space-y-3 text-gray-600 mb-6">
-              <p>1. React updates the DOM and the browser paints</p>
-              <p>2. useEffect runs asynchronously after paint</p>
-              <p>3. Each color update creates a new render cycle</p>
-            </div>
+        <Box sx={{ display: "flex", gap: 2, mb: 4, flexWrap: "wrap" }}>
+          {effectColors.map((color, index) => (
+            <Box
+              key={index}
+              sx={{
+                width: 80,
+                height: 80,
+                bgcolor: color,
+                borderRadius: 2,
+                boxShadow: 1,
+                transition: "background-color 0.3s",
+              }}
+            />
+          ))}
+        </Box>
 
-            <CodeExplanation type="effect" />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setEffectTrigger((prev) => prev + 1)}
+          sx={{ mb: 4 }}
+        >
+          Shuffle Colors
+        </Button>
 
-            <div className="mt-6">
-              <p className="font-semibold text-gray-900 mb-2">Key Points:</p>
-              <ul className="list-disc pl-5 space-y-2 text-gray-600">
-                <li>Asynchronous execution after browser paint</li>
-                <li>You can see intermediate states</li>
-                <li>
-                  Better for non-visual updates (API calls, subscriptions)
-                </li>
-                <li>Multiple render cycles visible to user</li>
-              </ul>
-            </div>
-          </div>
-        </section>
+        <EffectExplanation type="effect" />
+      </Paper>
 
-        {/* useLayoutEffect Section */}
-        <section className="bg-white rounded-2xl shadow-sm p-6 mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-            useLayoutEffect Example
-          </h2>
-          <div className="flex flex-wrap gap-3 mb-6">
-            {layoutEffectColors.map((color, index) => (
-              <div
-                key={index}
-                className="w-20 h-20 rounded-xl shadow-md transition-colors duration-300"
-                style={{ backgroundColor: color }}
-              />
-            ))}
-          </div>
-          <button
-            onClick={() => setLayoutEffectTrigger((prev) => prev + 1)}
-            className="bg-green-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-600 transition-colors"
-          >
-            Shuffle Colors
-          </button>
+      {/* useLayoutEffect Section */}
+      <Paper elevation={2} sx={{ p: 4, mb: 4, borderRadius: 2 }}>
+        <Typography variant="h4" gutterBottom>
+          useLayoutEffect Example
+        </Typography>
 
-          <div className="mt-8 bg-gray-50 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              How useLayoutEffect Works
-            </h3>
-            <div className="space-y-3 text-gray-600 mb-6">
-              <p>1. React updates the DOM</p>
-              <p>2. useLayoutEffect runs synchronously before paint</p>
-              <p>3. Browser paints final state only</p>
-            </div>
+        <Box sx={{ display: "flex", gap: 2, mb: 4, flexWrap: "wrap" }}>
+          {layoutEffectColors.map((color, index) => (
+            <Box
+              key={index}
+              sx={{
+                width: 80,
+                height: 80,
+                bgcolor: color,
+                borderRadius: 2,
+                boxShadow: 1,
+                transition: "background-color 0.3s",
+              }}
+            />
+          ))}
+        </Box>
 
-            <CodeExplanation type="layout" />
+        <Button
+          variant="contained"
+          color="success"
+          onClick={() => setLayoutEffectTrigger((prev) => prev + 1)}
+          sx={{ mb: 4 }}
+        >
+          Shuffle Colors
+        </Button>
 
-            <div className="mt-6">
-              <p className="font-semibold text-gray-900 mb-2">Key Points:</p>
-              <ul className="list-disc pl-5 space-y-2 text-gray-600">
-                <li>Synchronous execution before browser paint</li>
-                <li>Only final state is visible</li>
-                <li>Better for visual updates (measurements, animations)</li>
-                <li>Single render cycle visible to user</li>
-              </ul>
-            </div>
-          </div>
-        </section>
+        <EffectExplanation type="layout" />
+      </Paper>
 
-        {/* Use Cases Section */}
-        <section className="bg-white rounded-2xl shadow-sm p-6">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-            When to Use Each Hook
-          </h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                useEffect is best for:
-              </h3>
-              <ul className="list-disc pl-5 space-y-2 text-gray-600">
-                <li>Data fetching and API calls</li>
-                <li>Setting up subscriptions or timers</li>
-                <li>Updating non-visual state</li>
-                <li>Side effects that don't require synchronous execution</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                useLayoutEffect is best for:
-              </h3>
-              <ul className="list-disc pl-5 space-y-2 text-gray-600">
-                <li>DOM measurements and updates</li>
-                <li>Tooltip positioning</li>
-                <li>Animations that must be synchronized</li>
-                <li>Preventing visual flickering</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
+      {/* Use Cases Section */}
+      <Paper elevation={2} sx={{ p: 4, borderRadius: 2 }}>
+        <Typography variant="h4" gutterBottom>
+          When to Use Each Hook
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 4,
+            flexWrap: { xs: "wrap", md: "nowrap" },
+          }}
+        >
+          <Box flex={1}>
+            <Typography variant="h6" gutterBottom>
+              useEffect is best for:
+            </Typography>
+            <ul style={{ color: "text.secondary", paddingLeft: 20 }}>
+              <li>Data fetching and API calls</li>
+              <li>Setting up subscriptions or timers</li>
+              <li>Updating non-visual state</li>
+              <li>Side effects that don't require synchronous execution</li>
+            </ul>
+          </Box>
+          <Box flex={1}>
+            <Typography variant="h6" gutterBottom>
+              useLayoutEffect is best for:
+            </Typography>
+            <ul style={{ color: "text.secondary", paddingLeft: 20 }}>
+              <li>DOM measurements and updates</li>
+              <li>Tooltip positioning</li>
+              <li>Animations that must be synchronized</li>
+              <li>Preventing visual flickering</li>
+            </ul>
+          </Box>
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 

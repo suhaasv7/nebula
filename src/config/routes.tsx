@@ -7,7 +7,7 @@ export const ROUTES = [
     element: <HomePage />,
   },
   {
-    path: "/useEffectVsUseLayoutEffect",
+    path: "/hooks-comparison",
     element: <UseEffectVsUseLayoutEffect />,
   },
 ];
