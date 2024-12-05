@@ -1,5 +1,6 @@
-import { Box, Button, Card, Container, Paper, Typography } from "@mui/material";
-import { useEffect, useLayoutEffect, useState } from "react";
+
+import { useState, useEffect, useLayoutEffect } from "react";
+import { Box, Typography, Card, Button, Container, Paper } from "@mui/material";
 
 // Side by Side Explanation Component
 const EffectExplanation = ({ type }: { type: "effect" | "layout" }) => {
