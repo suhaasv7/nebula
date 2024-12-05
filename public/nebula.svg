@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Background circle -->
+  <circle cx="16" cy="16" r="16" fill="#1a1a2e"/>
+  
+  <!-- Stylized nebula swirls -->
+  <path d="M8 16 Q16 8, 24 16 Q16 24, 8 16" fill="none" stroke="#7b2cbf" stroke-width="2" opacity="0.8">
+    <animate attributeName="d" dur="8s" repeatCount="indefinite"
+      values="M8 16 Q16 8, 24 16 Q16 24, 8 16;
+              M8 16 Q16 12, 24 16 Q16 20, 8 16;
+              M8 16 Q16 8, 24 16 Q16 24, 8 16"/>
+  </path>
+  
+  <!-- Nebula core -->
+  <circle cx="16" cy="16" r="6" fill="#9d4edd" opacity="0.6">
+    <animate attributeName="r" values="5;6;5" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Stars -->
+  <circle cx="10" cy="12" r="1" fill="white" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.2;0.8" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="22" cy="12" r="1" fill="white" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.2;0.8" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="16" cy="8" r="1" fill="white" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.2;0.8" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+</svg>
