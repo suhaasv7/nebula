@@ -2,6 +2,8 @@
 import { useState, useEffect, useLayoutEffect } from "react";
 import { Box, Typography, Card, Button, Container, Paper } from "@mui/material";
 
+// Need to check if this code actually works
+
 // Side by Side Explanation Component
 const EffectExplanation = ({ type }: { type: "effect" | "layout" }) => {
   const code =
